@@ -1,0 +1,1218 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebForge — Generator kodu</title>
+
+<style>
+:root {
+    --bg: #0b1020;
+    --panel: #131b30;
+    --panel2: #19243c;
+    --text: #e9efff;
+    --muted: #9caac7;
+    --accent: #7c83ff;
+    --border: #2c3855;
+    --green: #50e3a4;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+button, input, select, textarea {
+    font: inherit;
+}
+
+button { cursor: pointer; }
+
+header {
+    padding: 22px 5%;
+    border-bottom: 1px solid var(--border);
+    background: #10172a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.logo span { color: var(--accent); }
+
+header p {
+    color: var(--muted);
+    margin: 7px 0 0;
+    font-size: 13px;
+}
+
+.badge {
+    color: var(--green);
+    border: 1px solid #285e52;
+    background: #122e2a;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+main {
+    max-width: 1450px;
+    margin: auto;
+    padding: 25px;
+}
+
+.intro { margin-bottom: 25px; }
+
+.intro h1 {
+    font-size: clamp(25px, 4vw, 36px);
+    margin-bottom: 8px;
+}
+
+.intro p {
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 18px;
+    min-width: 0;
+}
+
+.panel h2 {
+    font-size: 17px;
+    margin: 0 0 18px;
+}
+
+.panel h3 {
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin: 13px 0 6px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 11px;
+    color: var(--text);
+    background: #0b1326;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+}
+
+input[type="color"] {
+    padding: 3px;
+    height: 42px;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--accent);
+}
+
+button {
+    border: 0;
+    border-radius: 8px;
+    padding: 11px 14px;
+    color: white;
+    background: var(--accent);
+    font-weight: bold;
+}
+
+button:hover { filter: brightness(1.12); }
+
+.secondary {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+}
+
+.danger {
+    background: #51283b;
+    border: 1px solid #84445d;
+}
+
+.full {
+    width: 100%;
+    margin-top: 14px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.hint {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.element-list {
+    display: grid;
+    gap: 9px;
+    margin-top: 15px;
+}
+
+.element-item {
+    background: #0d1528;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.element-item strong {
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.element-item button {
+    padding: 7px 9px;
+    font-size: 12px;
+}
+
+.tabs {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+}
+
+.tab {
+    background: #0b1326;
+    border: 1px solid var(--border);
+}
+
+.tab.active { background: var(--accent); }
+
+.code-area {
+    width: 100%;
+    min-height: 480px;
+    margin-top: 14px;
+    resize: vertical;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre;
+    tab-size: 4;
+}
+
+.actions {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-top: 13px;
+}
+
+.status {
+    color: var(--green);
+    font-size: 13px;
+    margin-top: 12px;
+    min-height: 18px;
+}
+
+.check-option {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--text);
+    margin: 13px 0;
+    font-size: 13px;
+}
+
+footer {
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
+    padding: 30px 15px;
+}
+
+@media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    main { padding: 15px; }
+    .code-area { min-height: 360px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <div class="logo">Web<span>Forge</span> / Code Studio</div>
+        <p>Generator HTML · CSS · JavaScript</p>
+    </div>
+    <div class="badge">● Generator kodu</div>
+</header>
+
+<main>
+
+    <section class="intro">
+        <h1>Stwórz własny kod strony</h1>
+        <p>
+            Wybieraj gotowe elementy, ustawiaj wygląd i dodawaj funkcje
+            JavaScript. Generator przygotuje kod, który możesz skopiować
+            i wykorzystać we własnym projekcie.
+        </p>
+    </section>
+
+    <div class="layout">
+
+        <section>
+
+            <div class="panel">
+                <h2>01 / Ustawienia strony</h2>
+
+                <label for="pageTitle">Tytuł strony</label>
+                <input id="pageTitle" value="Moja strona">
+
+                <label for="pageHeading">Nagłówek na stronie</label>
+                <input id="pageHeading" value="Witaj na mojej stronie!">
+
+                <div class="row">
+                    <div>
+                        <label for="bgColor">Kolor tła</label>
+                        <input type="color" id="bgColor" value="#f4f6fb">
+                    </div>
+                    <div>
+                        <label for="textColor">Kolor tekstu</label>
+                        <input type="color" id="textColor" value="#20263a">
+                    </div>
+                </div>
+
+                <label for="font">Czcionka</label>
+                <select id="font">
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="Verdana, sans-serif">Verdana</option>
+                    <option value="Georgia, serif">Georgia</option>
+                    <option value="'Times New Roman', serif">Times New Roman</option>
+                    <option value="monospace">Monospace</option>
+                </select>
+
+                <div class="row">
+                    <div>
+                        <label for="width">Szerokość treści</label>
+                        <select id="width">
+                            <option value="100%">100%</option>
+                            <option value="90%">90%</option>
+                            <option value="1200px">1200 px</option>
+                            <option value="1000px" selected>1000 px</option>
+                            <option value="800px">800 px</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="alignment">Wyrównanie</label>
+                        <select id="alignment">
+                            <option value="left">Do lewej</option>
+                            <option value="center">Na środku</option>
+                            <option value="right">Do prawej</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label for="theme">Styl przycisków</label>
+                <select id="theme">
+                    <option value="rounded">Zaokrąglone</option>
+                    <option value="square">Proste</option>
+                    <option value="pill">Owalne</option>
+                </select>
+            </div>
+
+            <div class="panel">
+                <h2>02 / Dodaj element HTML</h2>
+
+                <label for="elementType">Rodzaj elementu</label>
+                <select id="elementType">
+                    <option value="p">Akapit tekstu</option>
+                    <option value="h2">Nagłówek H2</option>
+                    <option value="h3">Nagłówek H3</option>
+                    <option value="button">Przycisk</option>
+                    <option value="link">Link</option>
+                    <option value="image">Obrazek</option>
+                    <option value="hr">Linia pozioma</option>
+                    <option value="ul">Lista punktowana</option>
+                    <option value="ol">Lista numerowana</option>
+                    <option value="table">Tabela</option>
+                    <option value="input">Pole formularza</option>
+                    <option value="textarea">Pole wiadomości</option>
+                    <option value="checkbox">Checkbox</option>
+                    <option value="form">Formularz z przyciskiem</option>
+                    <option value="section">Sekcja / karta</option>
+                </select>
+
+                <label for="elementText">Tekst / zawartość</label>
+                <input id="elementText" value="Przykładowy element">
+
+                <label for="elementUrl">Link lub adres obrazka</label>
+                <input id="elementUrl" placeholder="https://example.com">
+
+                <div class="row">
+                    <div>
+                        <label for="elementColor">Kolor elementu</label>
+                        <input type="color" id="elementColor" value="#7c83ff">
+                    </div>
+                    <div>
+                        <label for="elementSize">Rozmiar tekstu (px)</label>
+                        <input type="number" id="elementSize" min="8" max="100" value="18">
+                    </div>
+                </div>
+
+                <button class="full" id="addElement">+ Dodaj element do kodu</button>
+
+                <div class="element-list" id="elementList"></div>
+                <p class="hint">Dodane elementy będą częścią wygenerowanego kodu HTML.</p>
+            </div>
+
+            <div class="panel">
+                <h2>03 / JavaScript</h2>
+                <p class="hint">
+                    Wybierz gotową funkcję. Generator dopisze odpowiedni
+                    kod JavaScript do tworzonej strony.
+                </p>
+
+                <label for="jsType">Funkcja JavaScript</label>
+                <select id="jsType">
+                    <option value="alert">Komunikat alert()</option>
+                    <option value="prompt">Pytanie prompt()</option>
+                    <option value="confirm">Potwierdzenie confirm()</option>
+                    <option value="click">Reakcja na kliknięcie</option>
+                    <option value="changeText">Zmiana tekstu</option>
+                    <option value="changeColor">Zmiana koloru tła</option>
+                    <option value="counter">Licznik kliknięć</option>
+                    <option value="clock">Zegar na stronie</option>
+                    <option value="random">Losowanie liczby</option>
+                    <option value="if">Warunek if / else</option>
+                    <option value="loop">Pętla for</option>
+                    <option value="function">Własna funkcja</option>
+                    <option value="form">Obsługa formularza</option>
+                    <option value="toggle">Pokazywanie / ukrywanie</option>
+                    <option value="calculator">Prosty kalkulator</option>
+                    <option value="validation">Sprawdzanie formularza</option>
+                </select>
+
+                <label for="jsName">Nazwa funkcji lub elementu</label>
+                <input id="jsName" value="mojPrzycisk">
+
+                <label for="jsMessage">Tekst komunikatu / tekst do zmiany</label>
+                <input id="jsMessage" value="Witaj!">
+
+                <button class="full" id="addJS">+ Dodaj kod JavaScript</button>
+
+                <div class="element-list" id="jsList"></div>
+
+                <p class="hint">
+                    Kod jest generowany jako tekst. Uruchamia się dopiero
+                    wtedy, gdy wykorzystasz wygenerowaną stronę.
+                </p>
+            </div>
+
+            <div class="panel">
+                <h2>04 / Dodatkowe opcje</h2>
+
+                <label class="check-option">
+                    <input type="checkbox" id="responsive" checked>
+                    Responsywność na telefonach
+                </label>
+
+                <label class="check-option">
+                    <input type="checkbox" id="shadow" checked>
+                    Cienie elementów
+                </label>
+
+                <label class="check-option">
+                    <input type="checkbox" id="animations" checked>
+                    Animacja najechania na przyciski
+                </label>
+
+                <label class="check-option">
+                    <input type="checkbox" id="resetHeading" checked>
+                    Dodaj nagłówek strony
+                </label>
+
+                <button class="full" id="generate">⚡ Generuj kod strony</button>
+                <button class="full secondary" id="clear">Wyczyść dodane elementy</button>
+            </div>
+
+        </section>
+
+        <section>
+            <div class="panel">
+                <h2>05 / Wygenerowany kod</h2>
+
+                <div class="tabs">
+                    <button class="tab active" data-tab="html">HTML</button>
+                    <button class="tab" data-tab="css">CSS</button>
+                    <button class="tab" data-tab="js">JavaScript</button>
+                    <button class="tab" data-tab="all">Całość HTML</button>
+                </div>
+
+                <textarea
+                    class="code-area"
+                    id="output"
+                    spellcheck="false"
+                    aria-label="Wygenerowany kod"
+                    placeholder="Tutaj pojawi się kod..."></textarea>
+
+                <div class="actions">
+                    <button id="copy">Kopiuj kod</button>
+                    <button class="secondary" id="download">Pobierz HTML</button>
+                    <button class="secondary" id="preview">Podgląd strony</button>
+                </div>
+
+                <div class="status" id="status" aria-live="polite"></div>
+            </div>
+
+            <div class="panel">
+                <h2>Jak korzystać?</h2>
+                <p class="hint">
+                    1. Ustaw kolory i wygląd strony.<br><br>
+                    2. Dodaj elementy HTML z listy.<br><br>
+                    3. Wybierz potrzebne funkcje JavaScript.<br><br>
+                    4. Kliknij „Generuj kod strony”.<br><br>
+                    5. Skopiuj kod lub pobierz gotowy plik HTML.
+                </p>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<footer>WebForge Code Studio · HTML + CSS + JavaScript</footer>
+
+<script>
+"use strict";
+
+// ================================================
+// DANE GENERATORA
+// ================================================
+
+const elements = [];
+const scripts = [];
+
+let currentTab = "html";
+let generated = {
+    html: "",
+    css: "",
+    js: "",
+    all: ""
+};
+
+const $ = id => document.getElementById(id);
+
+function escapeHTML(value) {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+}
+
+function escapeAttribute(value) {
+    return escapeHTML(value);
+}
+
+function escapeJS(value) {
+    return JSON.stringify(String(value))
+        .replaceAll("<", "\\u003c")
+        .replaceAll(">", "\\u003e")
+        .replaceAll("&", "\\u0026")
+        .replaceAll("\u2028", "\\u2028")
+        .replaceAll("\u2029", "\\u2029");
+}
+
+function safeId(value) {
+    let id = String(value).replace(/[^a-zA-Z0-9_-]/g, "");
+    if (!id || !/^[a-zA-Z]/.test(id)) {
+        id = "element" + id;
+    }
+    return id;
+}
+
+function validURL(value) {
+    try {
+        const url = new URL(value, location.href);
+        return ["http:", "https:", "mailto:", "tel:"].includes(url.protocol);
+    } catch {
+        return false;
+    }
+}
+
+function getValue(id) {
+    return $(id).value.trim();
+}
+
+function setStatus(message) {
+    $("status").textContent = message;
+}
+
+// ================================================
+// LISTA ELEMENTÓW
+// ================================================
+
+function renderElements() {
+    const list = $("elementList");
+    list.replaceChildren();
+
+    if (!elements.length) {
+        const empty = document.createElement("p");
+        empty.className = "hint";
+        empty.textContent = "Nie dodano jeszcze elementów.";
+        list.appendChild(empty);
+        return;
+    }
+
+    elements.forEach((element, index) => {
+        const row = document.createElement("div");
+        row.className = "element-item";
+
+        const name = document.createElement("strong");
+        name.textContent = (index + 1) + ". " +
+            element.type.toUpperCase() + ": " + element.text;
+
+        const remove = document.createElement("button");
+        remove.className = "danger";
+        remove.textContent = "Usuń";
+        remove.addEventListener("click", () => {
+            elements.splice(index, 1);
+            renderElements();
+            generateCode();
+        });
+
+        row.append(name, remove);
+        list.appendChild(row);
+    });
+}
+
+function addElement() {
+    const type = getValue("elementType");
+    const text = getValue("elementText");
+    const url = getValue("elementUrl");
+    const color = getValue("elementColor");
+    const size = Number(getValue("elementSize"));
+
+    if (!text && !["hr"].includes(type)) {
+        setStatus("Wpisz tekst lub zawartość elementu.");
+        return;
+    }
+
+    if (!Number.isFinite(size) || size < 8 || size > 100) {
+        setStatus("Rozmiar tekstu musi wynosić 8–100 px.");
+        return;
+    }
+
+    if (["link", "button"].includes(type) && !validURL(url)) {
+        setStatus("Podaj poprawny adres HTTP, HTTPS, mailto lub tel.");
+        return;
+    }
+
+    if (type === "image" && !validURL(url)) {
+        setStatus("Podaj poprawny adres obrazka HTTP lub HTTPS.");
+        return;
+    }
+
+    if (["link", "button"].includes(type) &&
+        !["http:", "https:", "mailto:", "tel:"].includes(
+            new URL(url, location.href).protocol
+        )) {
+        setStatus("Niedozwolony protokół linku.");
+        return;
+    }
+
+    if (type === "image" &&
+        !["http:", "https:"].includes(new URL(url, location.href).protocol)) {
+        setStatus("Obrazek musi mieć adres HTTP lub HTTPS.");
+        return;
+    }
+
+    elements.push({ type, text, url, color, size });
+
+    renderElements();
+    setStatus("Dodano element: " + type);
+    generateCode();
+}
+
+$("addElement").addEventListener("click", addElement);
+
+// ================================================
+// GENEROWANIE ELEMENTÓW HTML
+// ================================================
+
+function renderElement(element, index) {
+    const text = escapeHTML(element.text);
+    const color = element.color;
+    const size = element.size;
+    const id = "wfElement" + index;
+
+    switch (element.type) {
+        case "p":
+            return `<p style="font-size:${size}px;color:${color}">${text}</p>`;
+
+        case "h2":
+        case "h3":
+            return `<${element.type} style="font-size:${size}px;color:${color}">${text}</${element.type}>`;
+
+        case "button":
+            return `<button id="${id}" class="wf-button" style="background:${color};font-size:${size}px" type="button">${text}</button>`;
+
+        case "link":
+            return `<a class="wf-link" style="font-size:${size}px;color:${color}" href="${escapeAttribute(element.url)}">${text}</a>`;
+
+        case "image":
+            return `<img class="wf-image" src="${escapeAttribute(element.url)}" alt="${text}" style="max-width:100%">`;
+
+        case "hr":
+            return `<hr style="border:0;border-top:${Math.max(1, Math.min(size, 12))}px solid ${color}">`;
+
+        case "ul":
+        case "ol": {
+            const items = element.text.split(",").map(item =>
+                `<li>${escapeHTML(item.trim())}</li>`
+            ).join("\n");
+            return `<${element.type} style="font-size:${size}px;color:${color}">\n${items}\n</${element.type}>`;
+        }
+
+        case "table": {
+            const headers = element.text.split(",").map(item =>
+                `<th>${escapeHTML(item.trim())}</th>`
+            ).join("");
+            return `<table class="wf-table"><thead><tr>${headers}</tr></thead><tbody><tr>${element.text.split(",").map(() => "<td>Wartość</td>").join("")}</tr></tbody></table>`;
+        }
+
+        case "input":
+            return `<label>${text}<input type="text" placeholder="${text}" class="wf-input"></label>`;
+
+        case "textarea":
+            return `<label>${text}<textarea class="wf-input" placeholder="${text}"></textarea></label>`;
+
+        case "checkbox":
+            return `<label class="wf-check"><input type="checkbox"> ${text}</label>`;
+
+        case "form":
+            return `<form class="wf-form" id="${id}"><label>${text}<input name="message" required></label><button class="wf-button" type="submit">Wyślij</button><p class="wf-form-result" aria-live="polite"></p></form>`;
+
+        case "section":
+            return `<section class="wf-card" style="border-color:${color};font-size:${size}px"><h2>${text}</h2><p>Treść sekcji</p></section>`;
+
+        default:
+            return `<p>${text}</p>`;
+    }
+}
+
+// ================================================
+// GENEROWANIE CSS
+// ================================================
+
+function generateCSS() {
+    const bg = $("bgColor").value;
+    const fg = $("textColor").value;
+    const font = $("font").value;
+    const width = $("width").value;
+    const alignment = $("alignment").value;
+    const theme = $("theme").value;
+
+    const radius =
+        theme === "pill" ? "999px" :
+        theme === "square" ? "2px" : "9px";
+
+    const shadow = $("shadow").checked
+        ? "0 5px 18px rgba(0,0,0,.12)"
+        : "none";
+
+    const hover = $("animations").checked
+        ? "transform:translateY(-2px);filter:brightness(1.08);"
+        : "";
+
+    let css = `/* STYLE STRONY */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 24px;
+    background: ${bg};
+    color: ${fg};
+    font-family: ${font};
+    text-align: ${$("alignment").value};
+    line-height: 1.6;
+}
+
+main {
+    width: ${width};
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.wf-button {
+    border: none;
+    border-radius: ${radius};
+    padding: 12px 20px;
+    margin: 6px;
+    color: white;
+    cursor: pointer;
+    box-shadow: ${shadow};
+    transition: .2s ease;
+}
+
+.wf-button:hover {
+    ${hover || "filter:brightness(.96);"}
+}
+
+.wf-link {
+    display: inline-block;
+    margin: 8px;
+}
+
+.wf-image {
+    height: auto;
+    border-radius: ${radius};
+    box-shadow: ${shadow};
+}
+
+.wf-card {
+    padding: 22px;
+    margin: 18px 0;
+    border: 1px solid;
+    border-radius: ${radius};
+    box-shadow: ${shadow};
+}
+
+.wf-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+}
+
+.wf-table th,
+.wf-table td {
+    border: 1px solid currentColor;
+    padding: 10px;
+}
+
+.wf-input {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    padding: 12px;
+    margin: 8px 0 16px;
+    border: 1px solid #aaa;
+    border-radius: ${radius};
+    font: inherit;
+}
+
+.wf-check {
+    display: block;
+    margin: 12px 0;
+}
+
+.wf-form {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.wf-form-result {
+    font-weight: bold;
+}
+`;
+
+    if ($("responsive").checked) {
+        css += `
+/* RESPONSYWNOŚĆ */
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .wf-button {
+        max-width: 100%;
+    }
+
+    .wf-table {
+        font-size: 13px;
+    }
+}
+`;
+    }
+
+    return css;
+}
+
+// ================================================
+// GENEROWANIE JAVASCRIPT
+// ================================================
+
+function generateJS() {
+    let code = "";
+
+    if ($("resetHeading").checked) {
+        code += `// Kod wykonywany po załadowaniu dokumentu
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("Strona jest gotowa!");
+});
+
+`;
+    }
+
+    scripts.forEach((script, index) => {
+        const name = safeId(script.name);
+        const message = escapeJS(script.message);
+        const id = "wfElement" + script.elementIndex;
+
+        code += `
+// ========================================
+// FUNKCJA ${index + 1}: ${script.type}
+// ========================================
+`;
+
+        switch (script.type) {
+            case "alert":
+                code += `alert(${message});\n`;
+                break;
+
+            case "prompt":
+                code += `const odpowiedz${index} = prompt(${message});\nconsole.log(odpowiedz${index});\n`;
+                break;
+
+            case "confirm":
+                code += `if (confirm(${message})) {\n    console.log("Użytkownik potwierdził.");\n} else {\n    console.log("Użytkownik anulował.");\n}\n`;
+                break;
+
+            case "click":
+                code += `const ${name} = document.getElementById("${id}");\nif (${name}) {\n    ${name}.addEventListener("click", () => {\n        alert(${message});\n    });\n}\n`;
+                break;
+
+            case "changeText":
+                code += `const ${name} = document.getElementById("${id}");\nif (${name}) {\n    ${name}.textContent = ${message};\n}\n`;
+                break;
+
+            case "changeColor":
+                code += `document.body.style.backgroundColor = ${message};\n`;
+                break;
+
+            case "counter":
+                code += `let licznik${index} = 0;\nconst ${name} = document.getElementById("${id}");\nif (${name}) {\n    ${name}.addEventListener("click", () => {\n        licznik${index}++;\n        ${name}.textContent = "Kliknięcia: " + licznik${index};\n    });\n}\n`;
+                break;
+
+            case "clock":
+                code += `const zegar${index} = document.createElement("p");\ndocument.body.appendChild(zegar${index});\nfunction aktualizujZegar${index}() {\n    zegar${index}.textContent = new Date().toLocaleTimeString("pl-PL");\n}\naktualizujZegar${index}();\nsetInterval(aktualizujZegar${index}, 1000);\n`;
+                break;
+
+            case "random":
+                code += `const liczba${index} = Math.floor(Math.random() * 100) + 1;\nconsole.log("Wylosowano:", liczba${index});\nalert("Wylosowano: " + liczba${index});\n`;
+                break;
+
+            case "if":
+                code += `const wynik${index} = Number(prompt("Wpisz liczbę:"));\nif (Number.isFinite(wynik${index}) && wynik${index} > 10) {\n    alert("Liczba jest większa od 10.");\n} else if (Number.isFinite(wynik${index})) {\n    alert("Liczba wynosi 10 lub mniej.");\n} else {\n    alert("Nie wpisano poprawnej liczby.");\n}\n`;
+                break;
+
+            case "loop":
+                code += `for (let i = 1; i <= 5; i++) {\n    console.log("Iteracja:", i);\n}\n`;
+                break;
+
+            case "function":
+                code += `function ${name}() {\n    console.log(${message});\n    return ${message};\n}\n${name}();\n`;
+                break;
+
+            case "form":
+                code += `document.querySelectorAll(".wf-form").forEach((form) => {\n    form.addEventListener("submit", (event) => {\n        event.preventDefault();\n        const result = form.querySelector(".wf-form-result");\n        if (result) result.textContent = "Formularz został wypełniony.";\n    });\n});\n`;
+                break;
+
+            case "toggle":
+                code += `const ${name} = document.getElementById("${id}");\nif (${name}) {\n    ${name}.addEventListener("click", () => {\n        ${name}.hidden = !${name}.hidden;\n    });\n}\n`;
+                break;
+
+            case "calculator":
+                code += `const a${index} = Number(prompt("Podaj pierwszą liczbę:"));\nconst b${index} = Number(prompt("Podaj drugą liczbę:"));\nif (Number.isFinite(a${index}) && Number.isFinite(b${index})) {\n    alert("Suma: " + (a${index} + b${index}));\n} else {\n    alert("Podaj poprawne liczby.");\n}\n`;
+                break;
+
+            case "validation":
+                code += `document.querySelectorAll("form").forEach((form) => {\n    form.addEventListener("submit", (event) => {\n        if (!form.checkValidity()) {\n            event.preventDefault();\n            form.reportValidity();\n        }\n    });\n});\n`;
+                break;
+        }
+    });
+
+    return code;
+}
+
+// ================================================
+// DODAWANIE GOTOWYCH FUNKCJI JS
+// ================================================
+
+function renderScripts() {
+    const list = $("jsList");
+    list.replaceChildren();
+
+    if (!scripts.length) {
+        const empty = document.createElement("p");
+        empty.className = "hint";
+        empty.textContent = "Nie dodano jeszcze funkcji JS.";
+        list.appendChild(empty);
+        return;
+    }
+
+    scripts.forEach((script, index) => {
+        const row = document.createElement("div");
+        row.className = "element-item";
+
+        const name = document.createElement("strong");
+        name.textContent = (index + 1) + ". " + script.type;
+
+        const remove = document.createElement("button");
+        remove.className = "danger";
+        remove.textContent = "Usuń";
+
+        remove.addEventListener("click", () => {
+            scripts.splice(index, 1);
+            renderScripts();
+            generateCode();
+        });
+
+        row.append(name, remove);
+        list.appendChild(row);
+    });
+}
+
+function addJS() {
+    const type = getValue("jsType");
+    const name = getValue("jsName") || "mojaFunkcja";
+    const message = getValue("jsMessage") || "Witaj!";
+    const elementIndex = Math.max(0, elements.length - 1);
+
+    if (["click", "changeText", "counter", "toggle"].includes(type)) {
+        if (!elements.length) {
+            setStatus("Najpierw dodaj element HTML, np. przycisk.");
+            return;
+        }
+
+        if (!["button"].includes(elements[elementIndex].type)) {
+            setStatus("Ostatni element nie jest przyciskiem. Dodaj przycisk jako ostatni element.");
+            return;
+        }
+    }
+
+    if (type === "function" && !/^[A-Za-z_$][\w$]*$/.test(name)) {
+        setStatus("Nazwa funkcji musi być poprawnym identyfikatorem JavaScript.");
+        return;
+    }
+
+    scripts.push({ type, name, message, elementIndex });
+    renderScripts();
+    generateCode();
+    setStatus("Dodano funkcję JavaScript: " + type);
+}
+
+$("addJS").addEventListener("click", addJS);
+
+// ================================================
+// GENEROWANIE KOMPLETNEGO KODU
+// ================================================
+
+function generateCode() {
+    const title = escapeHTML(getValue("pageTitle") || "Moja strona");
+    const heading = escapeHTML(getValue("pageHeading") || "Moja strona");
+
+    const css = generateCSS();
+    const js = generateJS();
+
+    let body = "";
+
+    if ($("resetHeading").checked) {
+        body += `<h1>${heading}</h1>\n`;
+    }
+
+    body += elements.map(renderElement).join("\n\n");
+
+    const html = `<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+</head>
+<body>
+<main>
+${body}
+</main>
+</body>
+</html>`;
+
+    const all = `<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title}</title>
+    <style>
+${css}
+    </style>
+</head>
+<body>
+<main>
+${body}
+</main>
+<script>
+${js}
+<\/script>
+</body>
+</html>`;
+
+    generated = { html, css, js, all };
+    showTab(currentTab);
+}
+
+// ================================================
+// ZAKŁADKI
+// ================================================
+
+function showTab(tab) {
+    currentTab = tab;
+    $("output").value = generated[tab] || "";
+
+    document.querySelectorAll(".tab").forEach(button => {
+        button.classList.toggle("active", button.dataset.tab === tab);
+    });
+}
+
+document.querySelectorAll(".tab").forEach(button => {
+    button.addEventListener("click", () => {
+        showTab(button.dataset.tab);
+    });
+});
+
+// ================================================
+// KOPIOWANIE I POBIERANIE
+// ================================================
+
+$("copy").addEventListener("click", async () => {
+    const text = $("output").value;
+
+    try {
+        await navigator.clipboard.writeText(text);
+        setStatus("Kod skopiowany do schowka.");
+    } catch {
+        $("output").focus();
+        $("output").select();
+        setStatus("Zaznaczono kod. Skopiuj go skrótem Ctrl+C.");
+    }
+});
+
+$("download").addEventListener("click", () => {
+    generateCode();
+
+    const blob = new Blob(
+        [generated.all],
+        { type: "text/html;charset=utf-8" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "moja-strona.html";
+    link.click();
+
+    URL.revokeObjectURL(url);
+    setStatus("Przygotowano pobranie strony HTML.");
+});
+
+// ================================================
+// PODGLĄD
+// ================================================
+
+$("preview").addEventListener("click", () => {
+    generateCode();
+
+    const win = window.open("", "_blank");
+
+    if (!win) {
+        setStatus("Przeglądarka zablokowała nowe okno.");
+        return;
+    }
+
+    win.document.open();
+    win.document.write(generated.all);
+    win.document.close();
+
+    setStatus("Otwarto podgląd. Pamiętaj, że kod JS uruchamia się w podglądzie.");
+});
+
+// ================================================
+// CZYSZCZENIE
+// ================================================
+
+$("clear").addEventListener("click", () => {
+    elements.length = 0;
+    scripts.length = 0;
+
+    renderElements();
+    renderScripts();
+    generateCode();
+
+    setStatus("Wyczyszczono listę elementów i funkcji.");
+});
+
+$("generate").addEventListener("click", () => {
+    generateCode();
+    showTab("all");
+    setStatus("Kod HTML, CSS i JS został wygenerowany.");
+});
+
+// Aktualizuj kod, kiedy zmieniają się ustawienia.
+[
+    "pageTitle", "pageHeading", "bgColor", "textColor",
+    "font", "width", "alignment", "theme", "responsive",
+    "shadow", "animations", "resetHeading"
+].forEach(id => {
+    $(id).addEventListener("change", generateCode);
+});
+
+// Pierwsze uruchomienie.
+renderElements();
+renderScripts();
+generateCode();
+setStatus("Gotowe. Dodaj elementy i generuj kod.");
+</script>
+
+</body>
+</html>
